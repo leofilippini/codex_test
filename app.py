@@ -136,22 +136,25 @@ class GridEditor:
         if pdfcanvas is None:
             raise RuntimeError("reportlab is required for PDF export")
         c = pdfcanvas.Canvas(filename, pagesize=(self.width, self.height))
+        # Convert from Tkinter's top-left origin to ReportLab's bottom-left origin
         for i in range(self.cols + 1):
             x = i * self.cell_size
             c.line(x, 0, x, self.height)
         for j in range(self.rows + 1):
             y = j * self.cell_size
-            c.line(0, y, self.width, y)
+            y_pdf = self.height - y
+            c.line(0, y_pdf, self.width, y_pdf)
         for shape in self.shapes:
             x = shape["x"] * self.cell_size
             y = shape["y"] * self.cell_size
             if shape["type"] == "square":
-                c.rect(x, y, self.cell_size, self.cell_size, fill=1)
+                y_pdf = self.height - y - self.cell_size
+                c.rect(x, y_pdf, self.cell_size, self.cell_size, fill=1)
             else:
                 p = c.beginPath()
-                p.moveTo(x + self.cell_size / 2, y)
-                p.lineTo(x + self.cell_size, y + self.cell_size)
-                p.lineTo(x, y + self.cell_size)
+                p.moveTo(x + self.cell_size / 2, self.height - y)
+                p.lineTo(x + self.cell_size, self.height - y - self.cell_size)
+                p.lineTo(x, self.height - y - self.cell_size)
                 p.close()
                 c.drawPath(p, fill=1)
         c.save()
