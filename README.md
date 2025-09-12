@@ -1,6 +1,6 @@
 # Grid Editor
 
-A simple cross-platform Python application using Tkinter that lets you place squares and triangles on a grid using the keyboard.
+A simple cross-platform Python application using PyQt6 that lets you place squares and triangles on a grid using the keyboard.
 
 - **Arrow keys** move the cursor on the grid.
 - Press **S** to place a square.
@@ -12,3 +12,5 @@ Run the application:
 ```bash
 python app.py
 ```
+
+PyQt6 is required to run the application. ReportLab is needed for PDF export.
